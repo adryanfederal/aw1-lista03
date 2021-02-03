@@ -109,3 +109,63 @@ exercise_two_button.addEventListener('click', () => {
 
     exercise_two_response.innerText = cpf.toString().replaceAll(',', '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
 })
+
+/**
+ * Exercicio 03
+ */
+
+var exercise_three_input = document.getElementById('exercise-three-input')
+var exercise_three_button = document.getElementById('exercise-three-button')
+var exercise_three_response = document.getElementById('exercise-three-response')
+
+exercise_three_button.addEventListener('click', () => {
+
+    let cpf = exercise_three_input.value.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").split("")
+    
+    if(cpf.length != 11){
+        exercise_three_response.innerText = 'CPF Inválido';
+        exercise_three_response.className = 'span-danger'
+        return;
+    }
+
+    for(let i=0; i < cpf.length; i++) cpf[i] = Number(cpf[i])
+
+    let first_digit = cpf[9] == (() => {
+        let last = 0;
+        let j = 10;
+        for(let i = 0; i < 9; i++){
+            last += cpf[i] * j;
+            j -= 1; 
+        }
+        
+        if(last % 11 < 2){
+            return 0
+        }else{
+            return 11 - (last % 11)
+        }
+    })()
+
+    let last_digit = cpf[10] == (() => {
+        let last = 0;
+        let j = 11;
+        for(let i = 0; i < 10; i++){
+            last += cpf[i] * j;
+            j -=1; 
+        }
+        
+        if(last % 11 < 2){
+            return 0
+        }else{
+            return 11 - (last % 11)
+        }  
+    })()
+
+    if(first_digit && last_digit){
+        exercise_three_response.innerText = 'CPF Válido';
+        exercise_three_response.className = 'span-success';
+    }else{
+        exercise_three_response.innerText = 'CPF Inválido';
+        exercise_three_response.className = 'span-danger';
+    }
+
+})
