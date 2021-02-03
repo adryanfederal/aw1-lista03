@@ -1,3 +1,7 @@
+/**
+ * Exercicio 01
+ */
+
 const storage = localStorage
 
 
@@ -15,9 +19,9 @@ const handleSaveClick = () => {
 const handleLoginClick = () => {
     let user_name = storage.getItem('username')
     let current_time = new Date();
-    let wellcome_message = current_time.getHours() >= 0 && current_time.getHours() < 12 ? "Bom dia! " : 
+    let wellcome_message = current_time.getHours() >= 0 && current_time.getHours() < 12 ? "Bom dia! " :
         current_time.getHours() >= 12 && current_time.getHours() < 18 ? "Boa tarde! " : "Boa noite! "
-    ;
+        ;
 
     console.log(exercise_one_response)
     exercise_one_response.innerHTML = `${wellcome_message} ${user_name}.`;
@@ -35,18 +39,18 @@ const handleLogoutClick = () => {
     exercise_one_button.setAttribute('disabled', true)
 }
 
-exercise_one_input.addEventListener( 'keyup' ,(e) => {
+exercise_one_input.addEventListener('keyup', (e) => {
 
     let user_name = e.target.value.toLowerCase()
     let saved_user_name = storage.getItem('username')
 
-    if(user_name == saved_user_name){
-        
+    if (user_name == saved_user_name) {
+
         exercise_one_button.innerHTML = "Entrar"
         exercise_one_button.onclick = handleLoginClick
         exercise_one_button.removeAttribute('disabled')
 
-    }else{
+    } else {
         exercise_one_button.innerHTML = "Salvar"
         exercise_one_button.onclick = handleSaveClick
         exercise_one_button.removeAttribute('disabled')
@@ -54,3 +58,54 @@ exercise_one_input.addEventListener( 'keyup' ,(e) => {
 
 })
 
+/**
+ * Exercicio 02
+ */
+
+var exercise_two_button = document.getElementById('exercise-two-button')
+var exercise_two_response = document.getElementById('exercise-two-response')
+
+exercise_two_button.addEventListener('click', () => {
+    var cpf = []
+
+    for (let i = 0; i < 9; i++) {
+        cpf[i] = Math.floor(Math.random() * 10);
+    }
+
+    cpf.push((
+        () => {
+            let last = 0;
+            let j = 10;
+            for(let i = 0; i < cpf.length; i++){
+                last += cpf[i] * j;
+                j -=1; 
+            }
+            
+            if(last % 11 < 2){
+                return 0
+            }else{
+                return 11 - (last % 11)
+            }
+
+        }
+    )())
+
+    cpf.push((
+        () => {
+            let last = 0;
+            let j = 11;
+            for(let i = 0; i < cpf.length; i++){
+                last += cpf[i] * j;
+                j -=1; 
+            }
+            
+            if(last % 11 < 2){
+                return 0
+            }else{
+                return 11 - (last % 11)
+            }
+        }
+    )())
+
+    exercise_two_response.innerText = cpf.toString().replaceAll(',', '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+})
